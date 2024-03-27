@@ -1,0 +1,2 @@
+// regix filter
+db.school.find({name: {"$regix": "^Holberton"}})
