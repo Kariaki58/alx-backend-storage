@@ -7,10 +7,10 @@ import uuid
 
 class Cache:
     """cache class"""
-    _redis = redis.Redis()
     def __init__(self) -> None:
         """instance method"""
-        Cache._redis.flushdb()
+        self._redis = redis.Redis()
+        self._redis.flushdb()
     
     
     def store(self, data: Union[str, int, float, bytes]) -> str:
