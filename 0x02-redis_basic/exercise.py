@@ -30,6 +30,20 @@ def call_history(method: Callable) -> Callable:
         return result
     return wrapper
     
+def replay(method: Callable) -> None:
+    """ Generate keys for inputs and outputs """
+    input_data = f"{method.__qualname__}:inputs"
+    output_data = f"{method.__qualname__}:outputs"
+    history = method.__self__._redis.lrange(input_data, 0, -1)
+    output_history = method.__self__._redis.lrange(output_data, 0, -1)
+
+    print("{} was called {} times:".format(
+        method.__qualname__, len(history)))
+
+    for his1, output in zip(history, output_history):
+        print("{}(*{}) -> {}".format(
+            method.__qualname__,
+            his1.decode("utf-8"), output.decode("utf-8")))
 
 
 class Cache:
